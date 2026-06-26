@@ -1,40 +1,245 @@
 # Customer Churn Prediction & Segmentation
 
 ## Executive Summary
-This project outlines a complete Machine Learning workflow designed to predict telecom customer churn and segment users based on their risk profiles. The repository demonstrates the progression from initial exploratory data analysis to an optimized machine learning pipeline, bridging the gap between predictive modeling and actionable business strategy.
 
-**Project Objective:**
-Build a robust classification model to identify at-risk customers and implement a K-Means clustering workflow to group them into targeted retention segments.
+This project presents an end-to-end Machine Learning pipeline for predicting telecom customer churn and generating business-oriented customer segments for targeted retention strategies.
+
+Starting from exploratory data analysis and data preprocessing, the project builds multiple machine learning models, performs hyperparameter optimization, compares model performance, and applies K-Means clustering to transform churn predictions into actionable business insights.
+
+The notebook demonstrates the complete workflow expected in a real-world data science project—from raw data to business recommendations.
+
+---
+
+## Project Objectives
+
+* Predict telecom customer churn using supervised machine learning.
+* Compare baseline and optimized classification models.
+* Optimize model performance using RandomizedSearchCV.
+* Compare Random Forest and XGBoost.
+* Interpret model predictions through Feature Importance Analysis.
+* Segment customers using K-Means clustering based on predicted churn probability and customer behavior.
+* Generate business-oriented retention strategies for each customer segment.
+
+---
 
 ## Repository Structure
-* **`dataset/`**: Contains the source dataset (`Telco_customer_churn.xlsx`).
-* **`source code/`**: Contains the foundational Exploratory Data Analysis (EDA), data cleaning, and baseline modeling (`MB_CBSOT_Project1.ipynb`).
-* **`optimized section/`**: Contains the advanced feature engineering, threshold-tuned classification, and K-Means customer segmentation implementation (`optimized_code.ipynb`).
 
-## Tech Stack
-* **Language:** Python
-* **Libraries:** Pandas, NumPy, Scikit-Learn, Matplotlib, Seaborn
-* **Algorithms:** Random Forest Classifier, K-Means Clustering
+```
+customer-churn-segmentation/
+│
+├── dataset/
+│   └── Telco_customer_churn.xlsx
+│
+├── source code/
+│   ├── MB_CBSOT_Project1.ipynb
+│   └── mb_cbsot_project1.py
+│
+├── optimized section/
+│   └── optimized_code.ipynb
+│
+└── README.md
+```
 
-## Model Performance & Key Metrics
-The optimized classification model was trained and evaluated on a held-out test set, with a specific focus on maximizing **Recall** to ensure the business does not miss identifying at-risk customers.
+* **dataset/** – Telecom customer churn dataset.
+* **source code/** – Original internship implementation.
+* **optimized section/** – Improved notebook with optimized machine learning pipeline, model comparison, customer segmentation, and business insights.
 
-* **Accuracy:** ~78%
-* **ROC-AUC:** ~85%
-* **Primary Metric:** High Recall (Optimized for retention campaigns)
+---
 
-## Business Actions & Customer Segmentation
-Using K-Means clustering on predicted churn probabilities, the customer base was partitioned into three actionable business personas:
+## Project Workflow
 
-1. **High Risk New Customers:** 
-   * *Action:* Launch early-life retention offers and proactive onboarding during the first 6 months.
-2. **Budget Loyal Customers:** 
-   * *Action:* Protect value perception with low-cost loyalty rewards and promote add-on services selectively without hurting affordability.
-3. **Premium Stable Customers:** 
-   * *Action:* Deliver white-glove premium support and offer targeted upsell bundles to deepen engagement rather than broad discounting.
+1. Data Loading
+2. Exploratory Data Analysis (EDA)
+3. Data Cleaning
+4. Feature Engineering
+5. Train-Test Split (Stratified)
+6. Baseline Random Forest
+7. Hyperparameter Optimization using RandomizedSearchCV
+8. XGBoost Model Training & Comparison
+9. Final Model Selection
+10. Model Evaluation
+11. Feature Importance Analysis
+12. Customer Segmentation using K-Means
+13. Business Insights & Retention Strategy
+
+---
+
+## Technologies Used
+
+### Programming Language
+
+* Python
+
+### Libraries
+
+* Pandas
+* NumPy
+* Scikit-learn
+* XGBoost
+* Matplotlib
+* Seaborn
+* OpenPyXL
+
+### Machine Learning Algorithms
+
+* Random Forest Classifier
+* XGBoost Classifier
+* K-Means Clustering
+
+---
+
+## Model Performance
+
+Three models were evaluated:
+
+| Model                  | Accuracy |     Recall |    ROC-AUC |
+| ---------------------- | -------: | ---------: | ---------: |
+| Baseline Random Forest |   79.28% |     52.67% |     0.8327 |
+| Tuned Random Forest    |   80.77% |     52.41% |     0.8544 |
+| XGBoost                |   80.62% | **54.28%** | **0.8565** |
+
+### Final Model Selection
+
+Rather than selecting the model solely based on Accuracy, the project uses a practical model selection strategy:
+
+- Prefer the model with the highest Accuracy.
+- If competing models differ by less than **0.5% Accuracy**, select the model with the higher Recall.
+
+Using this strategy, **XGBoost** was selected as the final model because it achieved the highest Recall among the top-performing models while also obtaining the best ROC-AUC score.
+
+---
+
+## Evolution of the Optimization Strategy
+
+This repository contains two optimization approaches that reflect the progression of the project.
+
+### Phase 1 – Recall-Oriented Optimization (Internship Implementation)
+
+The initial optimization focused on maximizing **Recall**, ensuring that as many potential churners as possible were identified for retention campaigns.
+
+| Model | Accuracy | Recall | ROC-AUC |
+|------|---------:|--------:|---------:|
+| Optimized Random Forest | **74.38%** | **82.62%** | 0.8500 |
+| XGBoost | 73.95% | 81.82% | 0.8485 |
+
+This approach is well suited for business scenarios where **missing a customer likely to churn is significantly more expensive than contacting additional customers**, even if it results in more false positives.
+
+---
+
+### Phase 2 – Balanced Production-Oriented Optimization (Current Implementation)
+
+The current notebook adopts a more balanced evaluation strategy by jointly considering **Accuracy, Recall, and ROC-AUC** during model selection.
+
+Compared to the initial implementation:
+
+- Improved Accuracy from **74.38% → 80.62%**
+- Improved ROC-AUC from **0.8500 → 0.8565**
+- Maintained competitive Recall while significantly reducing false-positive predictions
+- Added systematic model comparison, feature importance analysis, customer segmentation, and business insight generation
+
+This version better represents a production-ready machine learning workflow while preserving strong business relevance.
+
+---
+
+## Feature Importance
+
+The project analyzes the contribution of every feature using the selected model.
+
+The most influential features include:
+
+* Internet Service (Fiber Optic)
+* Electronic Check Payment Method
+* Two-Year Contract
+* One-Year Contract
+* Dependents
+* Internet Service Type
+* Tenure Months
+* Paperless Billing
+
+This improves model interpretability and helps explain customer churn behavior.
+
+---
+
+## Customer Segmentation
+
+Customers are clustered using **K-Means** on:
+
+* Tenure
+* Monthly Charges
+* Total Charges
+* Predicted Churn Probability
+
+The Elbow Method was used to determine the optimal number of clusters.
+
+Three business-friendly customer segments were identified:
+
+### High Risk New Customers
+
+* Short tenure
+* Highest churn probability
+* Require proactive onboarding and early retention campaigns
+
+### Budget Loyal Customers
+
+* Low monthly spending
+* Stable customer base
+* Best suited for loyalty rewards and affordable add-on services
+
+### Loyal Premium Customers
+
+* Long tenure
+* High monthly spending
+* Valuable customers requiring premium support and personalized offers
+
+---
+
+## Business Insights
+
+The project identifies high-value customers who are simultaneously:
+
+* High CLTV
+* High predicted churn probability
+
+These customers represent the highest retention priority.
+
+Business recommendations are generated for every customer segment to support targeted retention campaigns.
+
+---
 
 ## How to Run
-1. Clone this repository to your local machine.
-2. Ensure you have Jupyter Notebook or VS Code with the Jupyter extension installed.
-3. Install the required dependencies: `pip install pandas numpy scikit-learn matplotlib seaborn openpyxl`.
-4. Run the notebooks from top to bottom, starting with the `source code` for EDA, followed by the `optimized section` for the final pipeline.
+
+1. Clone the repository.
+
+```
+git clone <repository-url>
+```
+
+2. Install the required libraries.
+
+```
+pip install pandas numpy scikit-learn matplotlib seaborn xgboost openpyxl
+```
+
+3. Open `optimized section/optimized_code.ipynb`.
+
+4. Run all notebook cells from top to bottom.
+
+---
+
+## Future Improvements
+
+* Optimize the probability threshold for different business objectives (maximize Recall vs maximize Precision).
+* Perform cost-sensitive learning using customer lifetime value (CLTV).
+* Add SHAP values for model explainability.
+* Build an interactive Streamlit dashboard.
+* Deploy the model using FastAPI or Flask.
+* Automate retraining using an MLOps pipeline.
+
+---
+
+## Author
+
+**Manav Bhatia**
+
+Computer Science Engineering (AI/ML)
+Faculty of Technology, University of Delhi
